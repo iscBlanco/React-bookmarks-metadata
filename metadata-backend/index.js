@@ -8,8 +8,7 @@ app.use(bodyParser.text());
 
 app.post("/", (req, res) => {
   let url = req.body;
-  res.send(url);
-  go(url);
+  go(url).then((r) => res.send(r));
 });
 
 app.listen(port, () => {
@@ -17,5 +16,5 @@ app.listen(port, () => {
 });
 
 const go = async (url) => {
-  getHtmlMetadata(await getHtml(url));
+  return getHtmlMetadata(await getHtml(url));
 };
