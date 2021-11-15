@@ -19,7 +19,7 @@ function Bookmarks() {
         <h1 className="nav-link disabled">My bookmarks</h1>
         {/* eslint-disable-next-line */}
 
-        <button type="button" class="btn btn-primary">
+        <button type="button" className="btn btn-primary">
           Add new bookmark
         </button>
       </nav>

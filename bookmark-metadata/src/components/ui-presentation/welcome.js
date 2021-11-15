@@ -14,7 +14,7 @@ function Welcome() {
         occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum
       </p>
-      <button type="button" class="btn btn-primary">
+      <button type="button" className="btn btn-primary">
         Add new bookmark
       </button>
     </div>

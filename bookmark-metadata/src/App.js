@@ -4,6 +4,7 @@ import Welcome from "./components/ui-presentation/Welcome";
 import CardBookmark from "./components/ui-presentation/CardBookmark";
 import urlList from "./components/container/urlList";
 import Bookmarks from "./components/ui-presentation/Bookmarks";
+import FormUrls from "./components/ui-presentation/FormUrls";
 function App() {
   return (
     <div>
@@ -19,6 +20,7 @@ function App() {
       <br />
       <br />
       <Bookmarks />
+      <FormUrls></FormUrls>
     </div>
   );
 }

@@ -19,9 +19,9 @@ function Header() {
           </button>
           <div className="collapse navbar-collapse" id="navbarText">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-            <span class="nav-item dropdown">
+            <span className="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle"
                 href="http"
                 id="navbarDropdownMenuLink"
                 role="button"
@@ -31,24 +31,24 @@ function Header() {
                 Dropdown link
               </a>
               <ul
-                class="dropdown-menu"
+                className="dropdown-menu"
                 aria-labelledby="navbarDropdownMenuLink"
               >
                 <li>
                   {/* eslint-disable-next-line */}
-                  <a class="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#">
                     Action
                   </a>
                 </li>
                 <li>
                   {/* eslint-disable-next-line */}
-                  <a class="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#">
                     Another action
                   </a>
                 </li>
                 <li>
                   {/* eslint-disable-next-line */}
-                  <a class="dropdown-item" href="#">
+                  <a className="dropdown-item" href="#">
                     Something else here
                   </a>
                 </li>
