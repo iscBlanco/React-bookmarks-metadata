@@ -1,6 +1,8 @@
 import React from "react";
 import urlList from "../container/urlList";
+import HeaderBookmarks from "./HeaderBookmarks";
 import CardBookmark from "./CardBookmark";
+
 function Bookmarks() {
   const bookmarkElements = urlList.map((url) => {
     return (
@@ -15,15 +17,12 @@ function Bookmarks() {
   });
   return (
     <div>
-      <nav className="nav nav-pills nav-fill">
-        <h1 className="nav-link disabled">My bookmarks</h1>
-        {/* eslint-disable-next-line */}
-
-        <button type="button" className="btn btn-primary">
-          Add new bookmark
-        </button>
-      </nav>
-      <div>{bookmarkElements}</div>
+      <HeaderBookmarks></HeaderBookmarks>
+      <div className="container cards">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4">
+          {bookmarkElements}
+        </div>
+      </div>
     </div>
   );
 }

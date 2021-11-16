@@ -9,9 +9,131 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+
+/* FormUrls Styles */
+
 .md {
-    height: 500px;
-    width: 300px;
+    width: 40%;
     margin-left: auto;
-    margin-right: 0;
+    margin-right: 5%;
+}
+
+
+/* Welcome Styles */
+
+.welcome {
+    padding: 50px auto;
+    text-align: center;
+}
+
+.welcome p {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+
+/* CardBookmark Styles */
+
+.card {
+    width: 16rem;
+    padding: 30px 10px;
+    margin: 30px 10px;
+}
+
+
+/* HeaderBookmarks Styles */
+
+.header button {
+    padding: 0px 20px;
+    margin: -10px, 0;
+}
+
+@media (min-width: 1240px) {
+    .nav.nav.nav-pills.nav-fill {
+        max-width: 1220px;
+    }
+}
+
+@media (min-width: 992x) {
+    nav.nav.nav-pills.nav-fill {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 768px) {
+    nav.nav.nav-pills.nav-fill {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 576x) {
+    nav.nav.nav-pills.nav-fill {
+        max-width: 540px;
+    }
+}
+
+nav.nav.nav-pills.nav-fill {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1.nav-link.header-text {
+    color: black;
+    text-align: left;
+}
+
+h1.nav-link.headear-text {
+    background: none repeat scroll 0 0 blue;
+    bottom: -10px;
+    content: "";
+    display: block;
+    height: 10px;
+    position: relative;
+    width: 100px;
+}
+
+
+/* Header Styles */
+
+.welcome-user {
+    display: block;
+}
+
+.welcome-user p {
+    margin: 0;
+}
+
+.nav-item.dropdown a {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.woman-avatar {
+    border-radius: 50%;
+}
+
+
+/* FormUrl styles */
+
+.row.form {
+    justify-content: center;
+}
+
+.col-md-3.form {
+    width: 100%;
+    margin: 15px 10px;
+}
+
+.col-md-3.form input {
+    border: solid black;
+}
+
+.btn.btn-primary.form-button {
+    width: 96%;
 }

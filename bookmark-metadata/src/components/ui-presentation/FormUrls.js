@@ -2,31 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import cheerio from "cheerio";
 
+import MetaPreview from "./MetaPreview";
+
 function FormUrls() {
   const [url, setUrl] = useState("");
   const [bookmarkList, setBookmarkList] = useState([]);
-  /* 
-  const addNewBookmark = (url) => {
-    axios.get(url).then(
-      (response) => {
-        if (response.status === 200) {
-          const html = response.data;
-          const $ = cheerio.load(html);
-
-          const title = $("title").text();
-          const favicon = $('link[rel="shortcut icon"]').attr("href");
-          const image = $("img").attr("src");
-          setBookmarkList({
-            title: title,
-            favicon: favicon,
-            image: image,
-          });
-          console.log(`Este es el json agregado : ${bookmarkList[0]}`);
-        }
-      },
-      (e) => console.log(e)
-    );
-  }; */
 
   async function getHtml(url) {
     const { data: html } = await axios.get(url);
@@ -55,11 +35,12 @@ function FormUrls() {
 
   return (
     <div className="md">
-      <form className="row" onSubmit={sendUrl}>
-        <div className="col-md-3">
+      <form className="row form" onSubmit={sendUrl}>
+        <div className="col-md-3 form">
+          <h5 className="form-url">Insert you URL</h5>
           <input
             type="text"
-            placeholder="Url"
+            placeholder="https://company.com"
             className="form-control"
             onChange={(e) => {
               setUrl(e.target.value);
@@ -68,10 +49,11 @@ function FormUrls() {
           />
         </div>
 
-        <button type="primary" className="btn btn-primary">
-          Send
+        <button type="primary" className="btn btn-primary form-button">
+          Load metadata
         </button>
       </form>
+      <MetaPreview></MetaPreview>
     </div>
   );
 }
