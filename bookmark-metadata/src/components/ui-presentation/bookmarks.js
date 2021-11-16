@@ -4,6 +4,7 @@ import HeaderBookmarks from "./HeaderBookmarks";
 import CardBookmark from "./CardBookmark";
 
 function Bookmarks() {
+  console.log(`tipo de id ${typeof urlList[0].id}`);
   const bookmarkElements = urlList.map((url) => {
     return (
       <CardBookmark

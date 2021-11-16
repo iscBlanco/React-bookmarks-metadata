@@ -27,7 +27,6 @@ function Header() {
                     className="woman-avatar"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQssI0LN9iFFB5I14FWoCo6F4oigoDjgOl7lAnQPcmPzeNrP814RZ3McNa7U20FZrurf0Y&usqp=CAU"
                     alt=""
-                    srcset=""
                     width="30px"
                   />
                 </a>
