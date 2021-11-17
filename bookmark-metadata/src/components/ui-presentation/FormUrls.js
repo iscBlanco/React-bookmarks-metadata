@@ -3,6 +3,7 @@ import axios from "axios";
 import cheerio from "cheerio";
 
 import CardBookmark from "./CardBookmark";
+import { hola } from "../container/GetUrlHtml";
 
 function FormUrls() {
   const [card, setCard] = useState();
@@ -59,6 +60,7 @@ function FormUrls() {
       });
 
       console.log(`Objeto con push : ${JSON.stringify(metaObj)}`);
+      hola();
 
       return JSON.stringify(metaObj);
     } catch (error) {
@@ -83,18 +85,6 @@ function FormUrls() {
       console.log(e);
     }
   };
-  useEffect(() => {
-    let cardComponent = (
-      <CardBookmark
-        key={bookmarkList[bookmarkList.length - 1].id}
-        image={bookmarkList[bookmarkList.length - 1].image}
-        title={bookmarkList[bookmarkList.length - 1].title}
-        url={bookmarkList[bookmarkList.length - 1].url}
-        description={"description"}
-      />
-    );
-    setCard((c) => [...c, cardComponent]);
-  }, [bookmarkList]);
 
   return (
     <div className="md">
