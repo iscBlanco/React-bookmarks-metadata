@@ -9,48 +9,62 @@ function FormUrls() {
   const [bookmarkObj, setBookmarkObj] = useState({});
   const [bookmarkList, setBookmarkList] = useState([{}]);
 
-  const sendUrl = () => {
-    /* event.preventDefault(); */
+  const sendUrl = (event) => {
+    event.preventDefault();
     setBookmarkList([{}]);
     setBookmarkObj({});
     setUrlFromButton(url);
     setUrl("");
+    go(url).then((r) => setBookmarkObj(r));
+    console.log("Estado actualizado :" + bookmarkObj);
   };
 
-  useEffect(() => {
-    getHtml(urlFromButton).then((r) => console.log(r));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [urlFromButton]);
+  const go = async (url) => {
+    try {
+      let hola = getHtmlMetadata(getHtml(url), url, 1);
+      return hola;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // useEffect(() => {
+  //   go(urlFromButton)
+  //     .then((r) => {
+  //       setBookmarkObj(r);
+  //       console.log(`Este es el chingon ${r}`);
+  //       /*  setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]) */
+  //     })
+  //     .catch((e) => console.log(e));
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [urlFromButton]);
 
   return (
     <div className="md">
-      {/*    <form className="row form" onSubmit={sendUrl}> */}
-      <div className="col-md-3 form">
-        <h5 className="form-url">Insert you URL</h5>
-        <input
-          type="text"
-          placeholder="https://company.com"
-          className="form-control"
-          onChange={(e) => {
-            setUrl(e.target.value);
-          }}
-          name="url"
-        />
-      </div>
-      {/* </form> */}
-      <button
-        type="primary"
-        className="btn btn-primary form-button"
-        onClick={() => sendUrl()}
-      >
-        Load metadata
-      </button>
+      <form className="row form" onSubmit={sendUrl}>
+        <div className="col-md-3 form">
+          <h5 className="form-url">Insert you URL</h5>
+          <input
+            type="text"
+            placeholder="https://company.com"
+            className="form-control"
+            onChange={(e) => {
+              setUrl(e.target.value);
+            }}
+            name="url"
+          />
+        </div>
 
-      {bookmarkObj.length ? (
+        <button type="primary" className="btn btn-primary form-button">
+          Load metadata
+        </button>
+      </form>
+      {bookmarkObj.length === 0 ? (
         <h1>reading</h1>
       ) : (
         <CardBookmark
-          key={bookmarkList.length - 1}
+          key={1}
           id={bookmarkObj.id}
           image={bookmarkObj.image}
           url={bookmarkObj.url}
