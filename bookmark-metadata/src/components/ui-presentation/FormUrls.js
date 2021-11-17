@@ -7,6 +7,14 @@ import CardBookmark from "./CardBookmark";
 function FormUrls() {
   const [card, setCard] = useState();
   const [url, setUrl] = useState("");
+  const [bookmarkObj, setBookmarkObj] = useState({
+    id: 0,
+    title: "",
+    favicon: "",
+    image: "",
+    url: "",
+    description: "",
+  });
   const [bookmarkList, setBookmarkList] = useState([]);
 
   async function getHtml(url) {
@@ -70,10 +78,16 @@ function FormUrls() {
     event.preventDefault();
     console.log("enviando datos...", url);
 
-    go(url).then((r) =>
-      setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
-    );
+    go(url).then((r) => {
+      setBookmarkObj({
+        ...bookmarkObj,
+        title: r.title,
+      });
+
+      setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
+    });
     console.log("Estado actualizado :" + bookmarkList);
+    console.log("este es el json chingon" + bookmarkObj.title);
   };
 
   const go = async (url) => {
@@ -83,18 +97,10 @@ function FormUrls() {
       console.log(e);
     }
   };
+
   useEffect(() => {
-    let cardComponent = (
-      <CardBookmark
-        key={bookmarkList[bookmarkList.length - 1].id}
-        image={bookmarkList[bookmarkList.length - 1].image}
-        title={bookmarkList[bookmarkList.length - 1].title}
-        url={bookmarkList[bookmarkList.length - 1].url}
-        description={"description"}
-      />
-    );
-    setCard((c) => [...c, cardComponent]);
-  }, [bookmarkList]);
+    setCard();
+  }, [bookmarkObj]);
 
   return (
     <div className="md">
@@ -116,7 +122,17 @@ function FormUrls() {
           Load metadata
         </button>
       </form>
-      {bookmarkList.length === 0 ? <h1>reading</h1> : { card }}
+      {bookmarkList.length === 0 ? (
+        <h1>reading</h1>
+      ) : (
+        <CardBookmark
+          key={bookmarkObj.id}
+          image={bookmarkObj.image}
+          title={bookmarkObj.title}
+          url={bookmarkObj.url}
+          description={bookmarkObj.description}
+        />
+      )}
     </div>
   );
 }

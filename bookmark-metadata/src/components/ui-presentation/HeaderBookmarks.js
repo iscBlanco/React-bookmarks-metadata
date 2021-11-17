@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function HeaderBookmarks() {
   return (
@@ -7,9 +8,11 @@ function HeaderBookmarks() {
         <h1 className="nav-link header-text">My bookmarks</h1>
         {/* eslint-disable-next-line */}
         <hr />
-        <button type="button" className="btn btn-primary">
-          <h3> Add new bookmark</h3>
-        </button>
+        <Link to="/form">
+          <button type="button" className="btn btn-primary">
+            <h4> Add new bookmark</h4>
+          </button>
+        </Link>
       </nav>
     </div>
   );
