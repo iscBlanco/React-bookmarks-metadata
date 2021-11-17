@@ -1,6 +1,5 @@
 import React from "react";
 import urlList from "../container/urlList";
-import HeaderBookmarks from "./HeaderBookmarks";
 import CardBookmark from "./CardBookmark";
 
 function Bookmarks() {

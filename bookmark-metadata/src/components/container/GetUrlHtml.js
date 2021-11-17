@@ -1,14 +1,7 @@
 import axios from "axios";
 import { cheerio } from "cheerio";
 
-function getHtml() {
-  return console.log("funcion getHtml");
-}
-
-let getHtmlMetadata = () => {
-  return console.log("funcion getHtmlMetadata");
-};
-/* async function getHtml(url) {
+async function getHtml(url) {
   const { data: html } = await axios.get(url);
 
   return html;
@@ -39,17 +32,16 @@ let getHtmlMetadata = async (html, url) => {
       favicon = "not found";
     }
     /* NEED SOME REFACTOR */
-/* console.log(`El valor de favicon es: ${favicon} y es ${typeof favicon}`); */
-/*  const image = $("img").attr("src"); */
+    console.log(`El valor de favicon es: ${favicon} y es ${typeof favicon}`);
+    /*  const image = $("img").attr("src"); */
 
-/*   let image = $(
+    let image = $(
       "div.absolute.bottom-0.right-0.lg\\:mr-15.-mb-3.lg\\:-mb-13.h-48.w-40.lg\\:h-73.lg\\:w-60.rounded-8px > picture > img"
-    ).attr("data-src"); */
-/* image = JSON.parse(image); */
-/*   console.log(`El valor de image es: ${image} y es ${typeof image}`);
-    console.log(`tipo de variable de tamaño ${typeof bookmarkList.length}`);
+    ).attr("data-src");
+    /* image = JSON.parse(image); */
+    console.log(`El valor de image es: ${image} y es ${typeof image}`);
+
     metaObj.push({
-      id: bookmarkList.length,
       title: title,
       favicon: favicon,
       image: image,
@@ -58,12 +50,11 @@ let getHtmlMetadata = async (html, url) => {
     });
 
     console.log(`Objeto con push : ${JSON.stringify(metaObj)}`);
-    hola();
 
     return JSON.stringify(metaObj);
   } catch (error) {
     console.log(error);
   }
-}; */
+};
 
 export { getHtml, getHtmlMetadata };
