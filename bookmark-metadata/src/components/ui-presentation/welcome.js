@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Welcome() {
   return (
@@ -15,9 +16,11 @@ function Welcome() {
       </div>
 
       <br></br>
-      <button type="button" className="btn btn-primary">
-        Add new bookmark
-      </button>
+      <Link to="/form">
+        <button type="button" className="btn btn-primary">
+          Add new bookmark
+        </button>
+      </Link>
     </div>
   );
 }
