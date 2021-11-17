@@ -3,7 +3,6 @@ import axios from "axios";
 import cheerio from "cheerio";
 
 import CardBookmark from "./CardBookmark";
-import { hola } from "../container/GetUrlHtml";
 
 function FormUrls() {
   const [card, setCard] = useState();
@@ -60,7 +59,6 @@ function FormUrls() {
       });
 
       console.log(`Objeto con push : ${JSON.stringify(metaObj)}`);
-      hola();
 
       return JSON.stringify(metaObj);
     } catch (error) {
@@ -106,7 +104,17 @@ function FormUrls() {
           Load metadata
         </button>
       </form>
-      {bookmarkList.length === 0 ? <h1>reading</h1> : { card }}
+      {bookmarkList.length === 0 ? (
+        <h1>reading</h1>
+      ) : (
+        <CardBookmark
+          key={bookmarkList.length - 1}
+          image={bookmarkList[bookmarkList.length - 1].image}
+          url={bookmarkList[bookmarkList.length - 1].url}
+          title={bookmarkList[bookmarkList.length - 1].title}
+          description={bookmarkList[bookmarkList.length - 1].description}
+        />
+      )}
     </div>
   );
 }
