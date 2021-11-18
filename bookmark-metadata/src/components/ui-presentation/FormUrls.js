@@ -1,110 +1,75 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import cheerio from "cheerio";
+import { getHtml, getHtmlMetadata } from "../container/GetUrlHtml";
 
 import CardBookmark from "./CardBookmark";
 
 function FormUrls() {
-  const [card, setCard] = useState();
   const [url, setUrl] = useState("");
-  const [bookmarkObj, setBookmarkObj] = useState({
-    id: 0,
-    title: "",
+  const [urlFromButton, setUrlFromButton] = useState("");
+
+  const [bookmarkList, setBookmarkList] = useState([]);
+  const [bookmarkObj, setBookmarkObj] = useState({});
+  /* title: "",
     favicon: "",
     image: "",
     url: "",
-    description: "",
-  });
-  const [bookmarkList, setBookmarkList] = useState([]);
-
-  async function getHtml(url) {
-    const { data: html } = await axios.get(url);
-
-    return html;
-  }
-
-  let getHtmlMetadata = async (html, url) => {
-    try {
-      const $ = await cheerio.load(html);
-      const metaObj = [];
-      let title = $("title")
-        .text()
-        .replace(/1Asset/g, "")
-        .replace(/Asset/g, "")
-        .trim();
-      const removeExtraSpace = (s) => s.trim().split(/ +/).join(" ");
-      title = removeExtraSpace(title);
-      console.log(`El valor de title es: ${title} y es ${typeof title}`);
-      let description = $(
-        'p[class="hidden md:block font-rubik text-base text-surface-600 leading-loose"]'
-      ).html();
-
-      description = removeExtraSpace(description);
-      console.log(
-        `El valor de description es: ${description} y es ${typeof description}`
-      );
-      let favicon = $('link[rel="apple-touch-icon"]').attr("href");
-      if (favicon === undefined) {
-        favicon = "not found";
-      }
-      /* NEED SOME REFACTOR */
-      console.log(`El valor de favicon es: ${favicon} y es ${typeof favicon}`);
-      /*  const image = $("img").attr("src"); */
-
-      let image = $(
-        "div.absolute.bottom-0.right-0.lg\\:mr-15.-mb-3.lg\\:-mb-13.h-48.w-40.lg\\:h-73.lg\\:w-60.rounded-8px > picture > img"
-      ).attr("data-src");
-      /* image = JSON.parse(image); */
-      console.log(`El valor de image es: ${image} y es ${typeof image}`);
-      console.log(`tipo de variable de tamaño ${typeof bookmarkList.length}`);
-      metaObj.push({
-        id: bookmarkList.length,
-        title: title,
-        favicon: favicon,
-        image: image,
-        url: url,
-        description: description,
-      });
-
-      console.log(`Objeto con push : ${JSON.stringify(metaObj)}`);
-
-      return JSON.stringify(metaObj);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+    description: "", */
   const sendUrl = (event) => {
     event.preventDefault();
+
+    setUrlFromButton(url);
     console.log("enviando datos...", url);
+    setUrl("");
+  };
 
-    go(url).then((r) => {
-      setBookmarkObj({
-        ...bookmarkObj,
-        title: r.title,
-      });
-
-      setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
-    });
-    console.log("Estado actualizado :" + bookmarkList);
-    console.log("este es el json chingon" + bookmarkObj.title);
+  const cancelUrlInput = () => {
+    document.getElementById("url-form").reset();
   };
 
   const go = async (url) => {
     try {
-      return getHtmlMetadata(await getHtml(url), url);
+      return await getHtmlMetadata(await getHtml(url), url, 1);
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    setCard();
+    if (urlFromButton !== "") {
+      go(urlFromButton).then((r) => {
+        setBookmarkObj((prevState) => {
+          return { ...prevState, ...r };
+        });
+
+        setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
+      });
+
+      console.log("Estado actualizado :" + bookmarkList);
+      console.log("este es el json TITLE" + bookmarkObj.title);
+      console.log("este es el json IMAGE" + bookmarkObj.image);
+      console.log("este es el json FAVICON" + bookmarkObj.favicon);
+      console.log("este es el json DESCRIPTION" + bookmarkObj.description);
+    } else {
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlFromButton]);
+
+  useEffect(() => {
+    cancelUrlInput();
   }, [bookmarkObj]);
 
+  function isEmpty(obj) {
+    for (var prop in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+        return false;
+      }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
   return (
     <div className="md">
-      <form className="row form" onSubmit={sendUrl}>
+      <form className="row form" id="url-form" onSubmit={sendUrl}>
         <div className="col-md-3 form">
           <h5 className="form-url">Insert you URL</h5>
           <input
@@ -118,26 +83,46 @@ function FormUrls() {
           />
         </div>
 
-        <button type="primary" className="btn btn-primary form-button">
+        <button
+          /*  disabled={html} */
+          type="primary"
+          className="btn btn-primary form-button"
+        >
           Load metadata
         </button>
       </form>
-      {bookmarkList.length === 0 ? (
-        <h1>reading</h1>
+      {isEmpty(bookmarkObj) ? (
+        <h1>No elements</h1>
       ) : (
-        <CardBookmark
-          key={bookmarkObj.id}
-          image={bookmarkObj.image}
-          title={bookmarkObj.title}
-          url={bookmarkObj.url}
-          description={bookmarkObj.description}
-        />
+        <>
+          <form className="row form" id="url-form" onSubmit={sendUrl}>
+            <div className="card-form">
+              <CardBookmark
+                title={bookmarkObj.title}
+                favicon={bookmarkObj.favicon}
+                image={bookmarkObj.image}
+                url={bookmarkObj.url}
+                description={bookmarkObj.description}
+              />
+            </div>
+
+            <button
+              /*  disabled={html} */
+              type="primary"
+              className="btn btn-primary form-button"
+            >
+              SAVE BOOKMARK
+            </button>
+          </form>
+        </>
       )}
     </div>
   );
 }
 
 export default FormUrls;
+/*
+ */
 /* 
 const urlElems = $("pre.highlight.shell");
 for (let i = 0; i < urlElems.length; i++) {
@@ -148,3 +133,42 @@ for (let i = 0; i < urlElems.length; i++) {
     console.log(urlText);
   }
 } */
+/* 
+1 sacar las funciones
+++++DONE+++
+
+2 en la funcion que se dispara cuando obtenemos la url
+settear la url y este set activa useEffect
++++DONE+++++
+
+3 en useEffect llamamos las funciones para obtener html mandando por parametro la url
+y tambien llamamos la funcion que va obtener los datos del html
+
+4 variables que vamos a utilizar son para el objeto, para el
+arreglo, para la url esta se setea en el input, crear variable urlFromBotton
+
+
+5 ver como desplegar los datos  
+
+
+*/
+
+/*  
+
+  const sendUrl = (event) => {
+    event.preventDefault();
+    console.log("enviando datos...", url);
+
+    go(url).then((r) =>
+      console.log("Estado actualizado :" + JSON.stringify(r))
+    );
+  };
+
+
+const go = async (url) => {
+    try {
+      return getHtmlMetadata(await getHtml(url), url);
+    } catch (e) {
+      console.log(e);
+    }
+  }; */
