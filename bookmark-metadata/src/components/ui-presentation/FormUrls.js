@@ -8,7 +8,7 @@ function FormUrls() {
   const [urlFromButton, setUrlFromButton] = useState("");
   const [urlFromEffect, setUrlFromEffect] = useState("");
   const [html, setHtml] = useState("");
-  const [bookmarkList, setBookmarkList] = useState([{}]);
+  const [bookmarkList, setBookmarkList] = useState([]);
   const [bookmarkObj, setBookmarkObj] = useState({
     title: "",
     favicon: "",
@@ -24,12 +24,25 @@ function FormUrls() {
     console.log("enviando datos...", url);
     setUrl("");
     cancelUrlInput();
-    go(urlFromButton).then(
-      // (r) => setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) })
-      (r) =>
-        setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
-    );
-    console.log("Estado actualizado :" + bookmarkList.title);
+
+    go(url).then((r) => {
+      //THIS IS ONE WAY TO UPDATE OBJECTS BY VALUES
+      /*   setBookmarkObj({
+        ...bookmarkObj,
+        title : r.title,
+      }); */
+
+      setBookmarkObj((prevState) => {
+        return { ...prevState, ...r };
+      });
+
+      setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
+    });
+    console.log("Estado actualizado :" + bookmarkList);
+    console.log("este es el json TITLE" + bookmarkObj.title);
+    console.log("este es el json IMAGE" + bookmarkObj.image);
+    console.log("este es el json FAVICON" + bookmarkObj.favicon);
+    console.log("este es el json DESCRIPTION" + bookmarkObj.description);
   };
 
   const cancelUrlInput = () => {
@@ -38,9 +51,7 @@ function FormUrls() {
 
   const go = async (url) => {
     try {
-      const htmlResponse = await getHtml(url);
-
-      await getHtmlMetadata(htmlResponse, url);
+      return getHtmlMetadata(await getHtml(url), url);
     } catch (e) {
       console.log(e);
     }

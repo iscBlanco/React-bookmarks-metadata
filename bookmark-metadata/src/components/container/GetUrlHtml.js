@@ -52,7 +52,13 @@ let getHtmlMetadata = async (html, url) => {
 
     console.log(`Objeto con push : ${JSON.stringify(metaObj)}`);
 
-    return JSON.stringify(metaObj);
+    return {
+      title: title,
+      favicon: favicon,
+      image: image,
+      url: url,
+      description: description,
+    } /* JSON.stringify(metaObj) */;
   } catch (error) {
     console.log(error);
   }
