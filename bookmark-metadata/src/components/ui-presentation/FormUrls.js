@@ -6,43 +6,70 @@ import CardBookmark from "./CardBookmark";
 function FormUrls() {
   const [url, setUrl] = useState("");
   const [urlFromButton, setUrlFromButton] = useState("");
-  const [bookmarkObj, setBookmarkObj] = useState({});
-  const [bookmarkList, setBookmarkList] = useState([{}]);
 
+  const [bookmarkList, setBookmarkList] = useState([]);
+  const [bookmarkObj, setBookmarkObj] = useState({});
+  /* title: "",
+    favicon: "",
+    image: "",
+    url: "",
+    description: "", */
   const sendUrl = (event) => {
     event.preventDefault();
-    setBookmarkList([{}]);
-    setBookmarkObj({});
+
     setUrlFromButton(url);
+    console.log("enviando datos...", url);
     setUrl("");
-    go(url).then((r) => setBookmarkObj(r));
-    console.log("Estado actualizado :" + bookmarkObj);
+  };
+
+  const cancelUrlInput = () => {
+    document.getElementById("url-form").reset();
   };
 
   const go = async (url) => {
     try {
-      let hola = getHtmlMetadata(getHtml(url), url, 1);
-      return hola;
+      return await getHtmlMetadata(await getHtml(url), url, 1);
     } catch (e) {
       console.log(e);
     }
   };
 
-  // useEffect(() => {
-  //   go(urlFromButton)
-  //     .then((r) => {
-  //       setBookmarkObj(r);
-  //       console.log(`Este es el chingon ${r}`);
-  //       /*  setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]) */
-  //     })
-  //     .catch((e) => console.log(e));
+  useEffect(() => {
+    if (urlFromButton !== "") {
+      go(urlFromButton).then((r) => {
+        setBookmarkObj((prevState) => {
+          return { ...prevState, ...r };
+        });
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [urlFromButton]);
+        setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
+      });
 
+      console.log("Estado actualizado :" + bookmarkList);
+      console.log("este es el json TITLE" + bookmarkObj.title);
+      console.log("este es el json IMAGE" + bookmarkObj.image);
+      console.log("este es el json FAVICON" + bookmarkObj.favicon);
+      console.log("este es el json DESCRIPTION" + bookmarkObj.description);
+    } else {
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlFromButton]);
+
+  useEffect(() => {
+    cancelUrlInput();
+  }, [bookmarkObj]);
+
+  function isEmpty(obj) {
+    for (var prop in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+        return false;
+      }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
   return (
     <div className="md">
-      <form className="row form" onSubmit={sendUrl}>
+      <form className="row form" id="url-form" onSubmit={sendUrl}>
         <div className="col-md-3 form">
           <h5 className="form-url">Insert you URL</h5>
           <input
@@ -56,21 +83,38 @@ function FormUrls() {
           />
         </div>
 
-        <button type="primary" className="btn btn-primary form-button">
+        <button
+          /*  disabled={html} */
+          type="primary"
+          className="btn btn-primary form-button"
+        >
           Load metadata
         </button>
       </form>
-      {bookmarkObj.length === 0 ? (
-        <h1>reading</h1>
+      {isEmpty(bookmarkObj) ? (
+        <h1>No elements</h1>
       ) : (
-        <CardBookmark
-          key={1}
-          id={bookmarkObj.id}
-          image={bookmarkObj.image}
-          url={bookmarkObj.url}
-          title={bookmarkObj.title}
-          description={bookmarkObj.description}
-        />
+        <>
+          <form className="row form" id="url-form" onSubmit={sendUrl}>
+            <div className="card-form">
+              <CardBookmark
+                title={bookmarkObj.title}
+                favicon={bookmarkObj.favicon}
+                image={bookmarkObj.image}
+                url={bookmarkObj.url}
+                description={bookmarkObj.description}
+              />
+            </div>
+
+            <button
+              /*  disabled={html} */
+              type="primary"
+              className="btn btn-primary form-button"
+            >
+              SAVE BOOKMARK
+            </button>
+          </form>
+        </>
       )}
     </div>
   );
