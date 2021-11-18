@@ -8,8 +8,8 @@ function FormUrls() {
   const [urlFromButton, setUrlFromButton] = useState("");
   const [urlFromEffect, setUrlFromEffect] = useState("");
   const [html, setHtml] = useState("");
-
-  const [bookmarkList, setBookmarkList] = useState({
+  const [bookmarkList, setBookmarkList] = useState([]);
+  const [bookmarkObj, setBookmarkObj] = useState({
     title: "",
     favicon: "",
     image: "",
@@ -23,60 +23,29 @@ function FormUrls() {
     setUrlFromButton(url);
     console.log("enviando datos...", url);
     setUrl("");
+    cancelUrlInput();
+    go(urlFromButton); // .then(
+    //   // (r) => setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) })
+    //   (r) =>
+    //     setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
+    // );
+    console.log("Estado actualizado :" + bookmarkList);
   };
 
   const cancelUrlInput = () => {
     document.getElementById("url-form").reset();
   };
 
-  useEffect(() => {
-    if (urlFromButton !== "") {
-      getHtml(urlFromButton)
-        .then((res) => {
-          /* console.log(res); */
-          setHtml(res);
-          setUrlFromEffect(urlFromButton);
-          setUrlFromButton("");
-          cancelUrlInput();
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    } else {
-    }
-  }, [url, urlFromButton]);
-
-  useEffect(() => {
-    console.log(
-      `Html : ${html}: ++++ html tipo ++++ ${typeof html}, url : ${urlFromEffect}`
-    );
-    if (html !== "") {
-      getHtmlMetadata(html, urlFromEffect)
-        .then((r) => {
-          setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) });
-          console.log("+++++  RESPUESTA  :  ++++" + JSON.stringify(r));
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [html, urlFromButton, urlFromEffect]);
-
-  /*    go(url).then((r) =>
-      setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
-    );
-    console.log("Estado actualizado :" + bookmarkList);
-  }; */
-
-  /* const go = async (url) => {
+  const go = async (url) => {
     try {
-      return getHtmlMetadata(await getHtml(url), url);
+      const htmlResponse = await getHtml(url);
+      console.log(" +++ Html +++ " + htmlResponse);
+      const metadata = await getHtmlMetadata(htmlResponse, url);
+      console.log("+++ Metadata +++ " + metadata);
     } catch (e) {
       console.log(e);
     }
   };
- */
 
   return (
     <div className="md">
@@ -118,3 +87,37 @@ function FormUrls() {
 }
 
 export default FormUrls;
+
+// useEffect(() => {
+//   if (urlFromButton !== "") {
+//     getHtml(urlFromButton)
+//       .then((res) => {
+//         /* console.log(res); */
+//         setHtml(res);
+//         setUrlFromEffect(urlFromButton);
+//         setUrlFromButton("");
+//         cancelUrlInput();
+//       })
+//       .catch((e) => {
+//         console.log(e);
+//       });
+//   } else {
+//   }
+// }, [url, urlFromButton]);
+
+// useEffect(() => {
+//   console.log(
+//     `Html : ${html}: ++++ html tipo ++++ ${typeof html}, url : ${urlFromEffect}`
+//   );
+//   if (html !== "") {
+//     getHtmlMetadata(html, urlFromEffect)
+//       .then((r) => {
+//         setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) });
+//         console.log("+++++  RESPUESTA  :  ++++" + JSON.stringify(r));
+//       })
+//       .catch((e) => {
+//         console.log(e);
+//       });
+//   }
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+// }, [html, urlFromButton, urlFromEffect]);
