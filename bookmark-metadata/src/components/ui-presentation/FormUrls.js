@@ -8,7 +8,7 @@ function FormUrls() {
   const [urlFromButton, setUrlFromButton] = useState("");
   const [urlFromEffect, setUrlFromEffect] = useState("");
   const [html, setHtml] = useState("");
-  const [bookmarkList, setBookmarkList] = useState([]);
+  const [bookmarkList, setBookmarkList] = useState([{}]);
   const [bookmarkObj, setBookmarkObj] = useState({
     title: "",
     favicon: "",
@@ -24,12 +24,12 @@ function FormUrls() {
     console.log("enviando datos...", url);
     setUrl("");
     cancelUrlInput();
-    go(urlFromButton); // .then(
-    //   // (r) => setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) })
-    //   (r) =>
-    //     setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
-    // );
-    console.log("Estado actualizado :" + bookmarkList);
+    go(urlFromButton).then(
+      // (r) => setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) })
+      (r) =>
+        setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
+    );
+    console.log("Estado actualizado :" + bookmarkList.title);
   };
 
   const cancelUrlInput = () => {
@@ -39,9 +39,8 @@ function FormUrls() {
   const go = async (url) => {
     try {
       const htmlResponse = await getHtml(url);
-      console.log(" +++ Html +++ " + htmlResponse);
-      const metadata = await getHtmlMetadata(htmlResponse, url);
-      console.log("+++ Metadata +++ " + metadata);
+
+      await getHtmlMetadata(htmlResponse, url);
     } catch (e) {
       console.log(e);
     }
