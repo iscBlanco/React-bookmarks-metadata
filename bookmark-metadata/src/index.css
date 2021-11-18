@@ -22,6 +22,10 @@ h5.form-url+input {
     width: 100%;
 }
 
+.card-form {
+    align-items: center;
+}
+
 
 /* Welcome Styles */
 

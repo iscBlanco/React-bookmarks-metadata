@@ -6,43 +6,20 @@ import { getHtml, getHtmlMetadata } from "../container/GetUrlHtml";
 function FormUrls() {
   const [url, setUrl] = useState("");
   const [urlFromButton, setUrlFromButton] = useState("");
-  const [urlFromEffect, setUrlFromEffect] = useState("");
-  const [html, setHtml] = useState("");
+  const [hola, setHola] = useState("");
   const [bookmarkList, setBookmarkList] = useState([]);
-  const [bookmarkObj, setBookmarkObj] = useState({
-    title: "",
+  const [bookmarkObj, setBookmarkObj] = useState({});
+  /* title: "",
     favicon: "",
     image: "",
     url: "",
-    description: "",
-  });
-
+    description: "", */
   const sendUrl = (event) => {
     event.preventDefault();
-    setHtml("");
+
     setUrlFromButton(url);
     console.log("enviando datos...", url);
     setUrl("");
-    cancelUrlInput();
-
-    go(url).then((r) => {
-      //THIS IS ONE WAY TO UPDATE OBJECTS BY VALUES
-      /*   setBookmarkObj({
-        ...bookmarkObj,
-        title : r.title,
-      }); */
-
-      setBookmarkObj((prevState) => {
-        return { ...prevState, ...r };
-      });
-
-      setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
-    });
-    console.log("Estado actualizado :" + bookmarkList);
-    console.log("este es el json TITLE" + bookmarkObj.title);
-    console.log("este es el json IMAGE" + bookmarkObj.image);
-    console.log("este es el json FAVICON" + bookmarkObj.favicon);
-    console.log("este es el json DESCRIPTION" + bookmarkObj.description);
   };
 
   const cancelUrlInput = () => {
@@ -57,6 +34,40 @@ function FormUrls() {
     }
   };
 
+  useEffect(() => {
+    if (urlFromButton !== "") {
+      go(urlFromButton).then((r) => {
+        setBookmarkObj((prevState) => {
+          return { ...prevState, ...r };
+        });
+
+        setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
+      });
+
+      console.log("Estado actualizado :" + bookmarkList);
+      console.log("este es el json TITLE" + bookmarkObj.title);
+      console.log("este es el json IMAGE" + bookmarkObj.image);
+      console.log("este es el json FAVICON" + bookmarkObj.favicon);
+      console.log("este es el json DESCRIPTION" + bookmarkObj.description);
+      /* cancelUrlInput(); */
+    } else {
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlFromButton]);
+
+  useEffect(() => {
+    setHola(<h1>hola</h1>);
+  }, [bookmarkObj]);
+
+  function isEmpty(obj) {
+    for (var prop in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+        return false;
+      }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
   return (
     <div className="md">
       <form className="row form" id="url-form" onSubmit={sendUrl}>
@@ -81,16 +92,30 @@ function FormUrls() {
           Load metadata
         </button>
       </form>
-      {bookmarkList.length === 0 ? (
-        <h1>reading</h1>
+      {isEmpty(bookmarkObj) ? (
+        <h1>No elements</h1>
       ) : (
-        <CardBookmark
-        /*         key={bookmarkList[bookmarkList.length - 1].id}
-          image={bookmarkList[bookmarkList.length - 1].image}
-          title={bookmarkList[bookmarkList.length - 1].title}
-          url={bookmarkList[bookmarkList.length - 1].url}
-          description={"description"} */
-        />
+        <>
+          <form className="row form" id="url-form" onSubmit={sendUrl}>
+            <div className="card-form">
+              <CardBookmark
+                title={bookmarkObj.title}
+                favicon={bookmarkObj.favicon}
+                image={bookmarkObj.image}
+                url={bookmarkObj.url}
+                description={bookmarkObj.description}
+              />
+            </div>
+
+            <button
+              /*  disabled={html} */
+              type="primary"
+              className="btn btn-primary form-button"
+            >
+              SAVE BOOKMARK
+            </button>
+          </form>
+        </>
       )}
     </div>
   );
