@@ -7,9 +7,9 @@ async function getHtml(url) {
   return html;
 }
 
-let getHtmlMetadata = async (html, url) => {
+let getHtmlMetadata = (html, url) => {
   try {
-    const $ = await cheerio.load(html);
+    const $ = cheerio.load(html);
     const metaObj = [];
     let title = $("title")
       .text()
@@ -53,6 +53,7 @@ let getHtmlMetadata = async (html, url) => {
 
     return JSON.stringify(metaObj);
   } catch (error) {
+    console.log("++++++  Algo esta mal ++++++");
     console.log(error);
   }
 };

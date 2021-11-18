@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import CardBookmark from "./CardBookmark";
 import { getHtml, getHtmlMetadata } from "../container/GetUrlHtml";
@@ -6,28 +6,62 @@ import { getHtml, getHtmlMetadata } from "../container/GetUrlHtml";
 function FormUrls() {
   const [url, setUrl] = useState("");
   const [urlFromButton, setUrlFromButton] = useState("");
+  const [urlFromEffect, setUrlFromEffect] = useState("");
   const [html, setHtml] = useState("");
-  const [bookmarkList, setBookmarkList] = useState([]);
+
+  const [bookmarkList, setBookmarkList] = useState({
+    title: "",
+    favicon: "",
+    image: "",
+    url: "",
+    description: "",
+  });
 
   const sendUrl = (event) => {
     event.preventDefault();
-
     setHtml("");
     setUrlFromButton(url);
-    setUrl("");
     console.log("enviando datos...", url);
+    setUrl("");
+  };
+
+  const cancelUrlInput = () => {
+    document.getElementById("url-form").reset();
   };
 
   useEffect(() => {
-    getHtml(url)
-      .then((res) => {
-        console.log(res);
-        setHtml(res);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    if (urlFromButton !== "") {
+      getHtml(urlFromButton)
+        .then((res) => {
+          /* console.log(res); */
+          setHtml(res);
+          setUrlFromEffect(urlFromButton);
+          setUrlFromButton("");
+          cancelUrlInput();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+    }
   }, [url, urlFromButton]);
+
+  useEffect(() => {
+    console.log(
+      `Html : ${html}: ++++ html tipo ++++ ${typeof html}, url : ${urlFromEffect}`
+    );
+    if (html !== "") {
+      getHtmlMetadata(html, urlFromEffect)
+        .then((r) => {
+          setBookmarkList({ ...bookmarkList, ...JSON.stringify(r) });
+          console.log("+++++  RESPUESTA  :  ++++" + JSON.stringify(r));
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [html, urlFromButton, urlFromEffect]);
 
   /*    go(url).then((r) =>
       setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)])
@@ -46,7 +80,7 @@ function FormUrls() {
 
   return (
     <div className="md">
-      <form className="row form" onSubmit={sendUrl}>
+      <form className="row form" id="url-form" onSubmit={sendUrl}>
         <div className="col-md-3 form">
           <h5 className="form-url">Insert you URL</h5>
           <input
@@ -60,7 +94,11 @@ function FormUrls() {
           />
         </div>
 
-        <button type="primary" className="btn btn-primary form-button">
+        <button
+          /*  disabled={html} */
+          type="primary"
+          className="btn btn-primary form-button"
+        >
           Load metadata
         </button>
       </form>

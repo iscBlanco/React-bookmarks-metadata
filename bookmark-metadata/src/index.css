@@ -18,6 +18,10 @@ code {
     margin-right: 5%;
 }
 
+h5.form-url+input {
+    width: 100%;
+}
+
 
 /* Welcome Styles */
 
