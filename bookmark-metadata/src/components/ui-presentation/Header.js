@@ -23,8 +23,8 @@ function Header() {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <Link class="nav-link" to="/bookmarks">
+              <li className="nav-item">
+                <Link className="nav-link" to="/bookmarks">
                   <h4>My bookmarks</h4>
                 </Link>
               </li>

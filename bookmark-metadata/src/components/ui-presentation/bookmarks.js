@@ -2,12 +2,11 @@ import React from "react";
 import urlList from "../container/urlList";
 import CardBookmark from "./CardBookmark";
 
-function Bookmarks() {
-  console.log(`tipo de id ${typeof urlList[0].id}`);
-  const bookmarkElements = urlList.map((url) => {
+function Bookmarks({ list }) {
+  console.log(list);
+  const bookmarkElements = list.map((url) => {
     return (
       <CardBookmark
-        key={url.id}
         image={url.image}
         title={url.title}
         url={url.url}
@@ -15,6 +14,7 @@ function Bookmarks() {
       />
     );
   });
+
   return (
     <div>
       <div className="container cards">

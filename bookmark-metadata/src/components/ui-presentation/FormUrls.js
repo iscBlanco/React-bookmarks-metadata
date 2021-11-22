@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getHtml, getHtmlMetadata } from "../container/GetUrlHtml";
-
+import { Link } from "react-router-dom";
 import CardBookmark from "./CardBookmark";
 
-function FormUrls() {
+function FormUrls({ list, functionList }) {
   const [url, setUrl] = useState("");
   const [urlFromButton, setUrlFromButton] = useState("");
 
@@ -14,12 +14,34 @@ function FormUrls() {
     image: "",
     url: "",
     description: "", */
-  const sendUrl = (event) => {
-    event.preventDefault();
 
-    setUrlFromButton(url);
-    console.log("enviando datos...", url);
-    setUrl("");
+  const saveObj = () => {
+    console.log(list);
+
+    console.log("Objeto a guardar..." + bookmarkObj);
+    const metaObj = [];
+    metaObj.push({
+      title: bookmarkObj.title,
+      favicon: bookmarkObj.favicon,
+      image: bookmarkObj.image,
+      url: bookmarkObj.url,
+      description: bookmarkObj.description,
+    });
+    functionList((prevState) => [...prevState, ...bookmarkObj]);
+
+    console.log(list[0].title);
+    debugger;
+    /* setBookmarkObj({ ...bookmarkObj, ...{} });
+      console.log("Objeto borrado..." + bookmarkObj.title); */
+  };
+  const sendUrl = (event) => {
+    if (url) {
+      event.preventDefault();
+
+      setUrlFromButton(url);
+      console.log("enviando datos...", url);
+      setUrl("");
+    }
   };
 
   const cancelUrlInput = () => {
@@ -35,13 +57,11 @@ function FormUrls() {
   };
 
   useEffect(() => {
-    if (urlFromButton !== "") {
+    if (urlFromButton) {
       go(urlFromButton).then((r) => {
         setBookmarkObj((prevState) => {
           return { ...prevState, ...r };
         });
-
-        setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]);
       });
 
       console.log("Estado actualizado :" + bookmarkList);
@@ -54,9 +74,12 @@ function FormUrls() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlFromButton]);
 
-  useEffect(() => {
-    cancelUrlInput();
-  }, [bookmarkObj]);
+  /*  useEffect(() => {
+    if (bookmarkObj) {
+      debugger;
+      cancelUrlInput();
+    }
+  }, [bookmarkObj]); */
 
   function isEmpty(obj) {
     for (var prop in obj) {
@@ -95,27 +118,30 @@ function FormUrls() {
         <h1>No elements</h1>
       ) : (
         <>
-          <form className="row form" id="url-form" onSubmit={sendUrl}>
-            <div className="card-form">
-              <CardBookmark
-                title={bookmarkObj.title}
-                favicon={bookmarkObj.favicon}
-                image={bookmarkObj.image}
-                url={bookmarkObj.url}
-                description={bookmarkObj.description}
-              />
-            </div>
+          {/*  <form className="row form" id="url-form" onSubmit={saveObj}> */}
+          <div className="card-form">
+            <CardBookmark
+              title={bookmarkObj.title}
+              favicon={bookmarkObj.favicon}
+              image={bookmarkObj.image}
+              url={bookmarkObj.url}
+              description={bookmarkObj.description}
+            />
+          </div>
 
-            <button
-              /*  disabled={html} */
-              type="primary"
-              className="btn btn-primary form-button"
-            >
-              SAVE BOOKMARK
-            </button>
-          </form>
+          <button
+            /*  disabled={html} */
+            type="primary"
+            className="btn btn-primary form-button"
+            onClick={saveObj}
+          >
+            SAVE BOOKMARK
+          </button>
         </>
       )}
+      <Link to="/bookmarks">
+        <h4>My bookmarks</h4>
+      </Link>
     </div>
   );
 }

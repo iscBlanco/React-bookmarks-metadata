@@ -5,6 +5,7 @@ import Welcome from "./Welcome";
 import HeaderBookmarks from "./HeaderBookmarks";
 import Bookmarks from "./Bookmarks";
 import FormUrls from "./FormUrls";
+import { ConsumerObject } from "../container/stateContext";
 
 function Main() {
   return (
@@ -27,11 +28,26 @@ function Main() {
             <>
               <Header />
               <HeaderBookmarks />
-              <Bookmarks />
+              <ConsumerObject>
+                {(context) => <Bookmarks list={context.objectList} />}
+              </ConsumerObject>
             </>
           }
         />
-        <Route exact path="/form" element={<FormUrls />} />
+        <Route
+          exact
+          path="/form"
+          element={
+            <ConsumerObject>
+              {(context) => (
+                <FormUrls
+                  list={context.objectList}
+                  functionList={context.setObjectList}
+                />
+              )}
+            </ConsumerObject>
+          }
+        />
       </Routes>
     </div>
   );

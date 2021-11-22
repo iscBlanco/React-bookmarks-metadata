@@ -7,10 +7,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { ProviderObject } from "./components/container/stateContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ProviderObject>
+      <App />
+    </ProviderObject>
   </React.StrictMode>,
   document.getElementById("root")
 );
