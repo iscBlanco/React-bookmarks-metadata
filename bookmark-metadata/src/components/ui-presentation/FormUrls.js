@@ -16,9 +16,9 @@ function FormUrls({ list, functionList }) {
     description: "", */
 
   const saveObj = () => {
-    console.log(list);
+    console.log(`tipo de list : ${list}`);
 
-    console.log("Objeto a guardar..." + bookmarkObj);
+    console.log(`tipo bookmark ${typeof bookmarkObj}`);
     const metaObj = [];
     metaObj.push({
       title: bookmarkObj.title,
@@ -27,10 +27,12 @@ function FormUrls({ list, functionList }) {
       url: bookmarkObj.url,
       description: bookmarkObj.description,
     });
-    functionList((prevState) => [...prevState, ...bookmarkObj]);
+    console.log(`type de meta obj ${metaObj}`);
+    functionList((prevList) => [...prevList, bookmarkObj]);
+    /*     setBookmarkList((bookmarkList) => [...bookmarkList, JSON.stringify(r)]); */
 
-    console.log(list[0].title);
-    debugger;
+    console.log(list);
+
     /* setBookmarkObj({ ...bookmarkObj, ...{} });
       console.log("Objeto borrado..." + bookmarkObj.title); */
   };
